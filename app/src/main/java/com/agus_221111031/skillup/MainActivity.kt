@@ -31,7 +31,8 @@ data class Course(
     val platform: String,
     val level: String,
     val duration: String,
-    val certificate: Boolean
+    val certificate: Boolean,
+//    val link: String # Jika Ada Link
 )
 
 

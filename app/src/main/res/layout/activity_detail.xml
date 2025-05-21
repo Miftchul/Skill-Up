@@ -53,6 +53,20 @@
                 android:textColor="#000000"
                 android:lineSpacingExtra="4dp" />
 
+            <Button
+                android:id="@+id/btnStartCourse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mulai Sekarang"
+                android:backgroundTint="@color/purple_500"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@drawable/ic_baseline_play_circle_24"
+                android:padding="12dp"
+                android:textAllCaps="false"
+                android:textStyle="bold"/>
+
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
