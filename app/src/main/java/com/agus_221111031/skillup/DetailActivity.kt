@@ -10,18 +10,28 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val skillName = intent.getStringExtra("skill_name")
-        val skillMateri = intent.getStringExtra("skill_materi")
+        // Ambil data dari Intent
+        val name = intent.getStringExtra("name")
+        val description = intent.getStringExtra("description")
+        val materials = intent.getStringExtra("materials")
+        val platform = intent.getStringExtra("platform")
+        val level = intent.getStringExtra("level")
+        val duration = intent.getStringExtra("duration")
+        val certificate = intent.getBooleanExtra("certificate", false)
 
-        val titleText = findViewById<TextView>(R.id.skillName)
-        val materiText = findViewById<TextView>(R.id.skillDescription)
+        findViewById<TextView>(R.id.skillName).text = name
+        findViewById<TextView>(R.id.skillDescription).text = description
+        findViewById<TextView>(R.id.skillMaterials).text = "📘 Materi Singkat:\n$materials"
+        findViewById<TextView>(R.id.skillDetails).text = """
+📌 Platform     : $platform
+📌 Level        : $level
+📌 Durasi       : $duration
+📌 Sertifikat   : ${if (certificate) "✅ Ya" else "❌ Tidak"}
+""".trimIndent()
 
-        titleText.text = skillName
-        materiText.text = "Kursus ini bisa membantu kamu mengembangkan skill untuk karir!\n\n📘 Materi Singkat:\n$skillMateri"
 
-
+        // Tampilkan ke TextView
+//        val textView = findViewById<TextView>(R.id.skillDescription)
+//        textView.text = detailText
     }
-
-
-
 }

@@ -24,6 +24,15 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
 
+data class Course(
+    val name: String,
+    val description: String,
+    val materials: String,
+    val platform: String,
+    val level: String,
+    val duration: String,
+    val certificate: Boolean
+)
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,21 +41,56 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
-    private val skills = arrayOf(
-        "Belajar Python Gratis - Coursera",
-        "Dasar UI/UX - Google Course",
-        "Kelas Public Speaking - Udemy",
-        "Basic Project Management - edX",
-        "Microsoft Excel untuk Pemula - LinkedIn Learning"
+
+    private val courseList = listOf(
+        Course(
+            name = "Belajar Python Gratis - Coursera",
+            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            materials = "• Variabel dan Tipe Data\n• Perulangan\n• Fungsi Dasar\n• Mini Project Python",
+            platform = "Coursera",
+            level = "Beginner",
+            duration = "4 Minggu",
+            certificate = true
+        ),
+        // Tambahkan lainnya...
+        Course(
+            name = "Belajar UI/UX - Google Course",
+            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            materials = "• Prinsip Desain UI\n• Wireframing\n• User Journey\n• Prototyping Dasar",
+            platform = "Google Course",
+            level = "Beginner",
+            duration = "4 Minggu",
+            certificate = true
+        ),
+        Course(
+            name = "Kelas Public Speaking - Udemy",
+            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            materials = "• Teknik Vocal\n• Bahasa Tubuh\n• Menyusun Presentasi\n• Latihan Percaya Diri",
+            platform = "Udemy",
+            level = "Beginner",
+            duration = "2 Minggu",
+            certificate = true
+        ),
+        Course(
+            name = "Basic Project Management - edX",
+            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            materials = "• Apa itu PM?\n• WBS dan Timeline\n• Stakeholder\n• Tools: Trello, Gantt",
+            platform = "edX",
+            level = "Beginner",
+            duration = "2 Minggu",
+            certificate = true
+        ),
+        Course(
+            name = "Microsoft Excel untuk Pemula - LinkedIn Learning",
+            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            materials = "• Fungsi Dasar Excel\n• Rumus IF, SUM, AVERAGE\n• Tabel & Grafik\n• Latihan Kasus",
+            platform = "LinkedIn Learning",
+            level = "Beginner",
+            duration = "1 Minggu",
+            certificate = true
+        ),
     )
 
-    private val skillDetails = mapOf(
-        "Belajar Python Gratis - Coursera" to "• Variabel dan Tipe Data\n• Perulangan\n• Fungsi Dasar\n• Mini Project Python",
-        "Dasar UI/UX - Google Course" to "• Prinsip Desain UI\n• Wireframing\n• User Journey\n• Prototyping Dasar",
-        "Kelas Public Speaking - Udemy" to "• Teknik Vocal\n• Bahasa Tubuh\n• Menyusun Presentasi\n• Latihan Percaya Diri",
-        "Basic Project Management - edX" to "• Apa itu PM?\n• WBS dan Timeline\n• Stakeholder\n• Tools: Trello, Gantt",
-        "Microsoft Excel untuk Pemula - LinkedIn Learning" to "• Fungsi Dasar Excel\n• Rumus IF, SUM, AVERAGE\n• Tabel & Grafik\n• Latihan Kasus"
-    )
 
     private val NOTIFICATION_PERMISSION_CODE = 1001
 
@@ -105,19 +149,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = "SkillUp" // Judul ActionBar
-
         listView = findViewById(R.id.listViewSkills)
-        val adapter = SkillAdapter(this, skills)
+
+        val adapter = SkillAdapter(this, courseList.map { it.name }.toTypedArray())
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedSkill = skills[position]
+            val selected = courseList[position]
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("skill_name", selectedSkill)
-            intent.putExtra("skill_materi", skillDetails[selectedSkill])
+            intent.putExtra("name", selected.name)
+            intent.putExtra("description", selected.description)
+            intent.putExtra("materials", selected.materials)
+            intent.putExtra("platform", selected.platform)
+            intent.putExtra("level", selected.level)
+            intent.putExtra("duration", selected.duration)
+            intent.putExtra("certificate", selected.certificate)
             startActivity(intent)
         }
+
+
 
         val aboutButton = findViewById<Button>(R.id.aboutButton)
         aboutButton.setOnClickListener {

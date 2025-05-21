@@ -21,6 +21,7 @@ class SkillAdapter(
         val skillName = view!!.findViewById<TextView>(R.id.skillName)
         val skillIcon = view.findViewById<ImageView>(R.id.skillIcon)
 
+
         skillName.text = skills[position]
         skillIcon.setImageResource(R.drawable.ic_checklist) // pastikan ada gambar icon checklist di drawable
 
