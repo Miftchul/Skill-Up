@@ -1,10 +1,12 @@
-package com.agus_221111031.skillup
+package com.agus_221111031.skillup.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.agus_221111031.skillup.CourseContentActivity
+import com.agus_221111031.skillup.R
 
 class DetailActivity : AppCompatActivity() {
 
@@ -13,9 +15,10 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         // Ambil data dari Intent
-        val name = intent.getStringExtra("name")
+        val name = intent.getStringExtra("name") ?: "Nama tidak tersedia!"
         val description = intent.getStringExtra("description")
         val materials = intent.getStringExtra("materials")
+// Ambil data lainnya...
         val platform = intent.getStringExtra("platform")
         val level = intent.getStringExtra("level")
         val duration = intent.getStringExtra("duration")

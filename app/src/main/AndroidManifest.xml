@@ -15,10 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SkillUp"
         tools:targetApi="31">
-
         <activity
-            android:name=".CourseContentActivity" />
-        <!-- SplashActivity sebagai titik masuk aplikasi -->
+            android:name=".ui.cari.CariFragment"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".CourseContentActivity" /> <!-- SplashActivity sebagai titik masuk aplikasi -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -29,14 +30,24 @@
             </intent-filter>
         </activity> <!-- Halaman utama berisi daftar kursus -->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="false" /> <!-- Activity untuk halaman tentang -->
         <activity
             android:name=".AboutActivity"
-            android:exported="false" /> <!-- Activity untuk detail kursus -->
+            android:exported="false"
+            android:label="About"
+            android:parentActivityName=".ui.main.MainActivity" >  <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.main.MainActivity" />  </activity> <!-- Activity untuk detail kursus -->
         <activity
-            android:name=".DetailActivity"
-            android:exported="false" />
+            android:name=".ui.detail.DetailActivity"
+            android:exported="true"
+            android:label="Detail Kursus"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

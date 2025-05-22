@@ -1,4 +1,4 @@
-package com.agus_221111031.skillup
+package com.agus_221111031.skillup.ui.cari.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.agus_221111031.skillup.data.model.Course
+import com.agus_221111031.skillup.R
+import com.agus_221111031.skillup.ui.detail.DetailActivity
 
 class CourseAdapter(
     private val context: Context,
     private val courses: List<Course>
 ) : RecyclerView.Adapter<CourseAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.skillName)
     }
 
@@ -24,6 +28,8 @@ class CourseAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val course = courses[position]
         holder.nameTextView.text = course.name
+
+//        LOGIKA CLICKLISTENER
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("name", course.name)

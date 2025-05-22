@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.agus_221111031.skillup.ui.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
