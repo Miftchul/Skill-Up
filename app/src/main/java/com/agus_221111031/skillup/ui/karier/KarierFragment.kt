@@ -4,57 +4,57 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.agus_221111031.skillup.R
+import com.agus_221111031.skillup.data.job.provider.DummyJobProvider
+import com.agus_221111031.skillup.data.job.repository.JobRepository
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [androidx.fragment.app.Fragment] subclass.
- * Use the [KarierFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class KarierFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+//    INI JUGA SAMA DIBAWAH INTEGRASINYA TINGGAL MENYESESUAIKAN TRACK
+    private val jobsByInterest = listOf(
+        "Python Developer - Remote",
+        "UI/UX Designer - Jakarta",
+        "Data Analyst - Bandung"
+    )
+
+//    TES AJA
+//    private val latestJobs = listOf(
+//        "Frontend Developer - Surabaya",
+//        "Customer Support - Remote",
+//        "Product Manager - Yogyakarta",
+//        "Marketing Specialist - Jakarta"
+//    )
+
+//    INI INTEGRASINYA
+    val jobRepo = JobRepository(
+        listOf(
+            DummyJobProvider(),
+            // LinkedInJobProvider(),
+            // GoogleJobProvider(),
+            // MicrosoftJobProvider()
+        )
+    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_karier, container, false)
-    }
+    ): View {
+        val view = inflater.inflate(R.layout.fragment_karier, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment KarierFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            KarierFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        val rvInterest = view.findViewById<RecyclerView>(R.id.recyclerInterest)
+        val rvLatest = view.findViewById<RecyclerView>(R.id.recyclerLatest)
+
+        rvInterest.layoutManager = LinearLayoutManager(requireContext())
+        rvLatest.layoutManager = LinearLayoutManager(requireContext())
+
+        rvInterest.adapter = KarierAdapter(jobsByInterest)
+//        rvLatest.adapter = KarierAdapter(latestJobs) // UJI COBA
+
+        return view
     }
 }
