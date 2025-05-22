@@ -2,5 +2,9 @@
     <string name="app_name">SkillUp</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="explore">Jelajahi</string>
+    <string name="learn">Pelajari</string>
+    <string name="search">Cari</string>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
 </resources>

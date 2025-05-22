@@ -4,11 +4,16 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-
-// Notifikasi
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.Fragment
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -18,12 +23,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 
-// Nav Drawer
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.widget.Toolbar
-import androidx.appcompat.app.ActionBarDrawerToggle
+// Data class untuk kursus dengan anotasi Parcelable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Course(
     val name: String,
     val description: String,
@@ -32,16 +36,16 @@ data class Course(
     val level: String,
     val duration: String,
     val certificate: Boolean,
-//    val link: String # Jika Ada Link
-)
-
+    val content: String
+) : Parcelable
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var listView: ListView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
-
+    private lateinit var bottomNav: BottomNavigationView
+    private val exploreFragment = ExploreFragment()
+    private val learnFragment = LearnFragment()
+    private val searchFragment = SearchFragment()
 
     private val courseList = listOf(
         Course(
@@ -51,57 +55,58 @@ class MainActivity : AppCompatActivity() {
             platform = "Coursera",
             level = "Beginner",
             duration = "4 Minggu",
-            certificate = true
+            certificate = true,
+            content = "Materi lengkap tentang dasar-dasar Python, termasuk sintaks, struktur data, dan proyek sederhana untuk membangun aplikasi kecil."
         ),
-        // Tambahkan lainnya...
         Course(
             name = "Belajar UI/UX - Google Course",
-            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            description = "Kursus ini membantu kamu memahami prinsip dasar desain UI/UX untuk pengembangan aplikasi.",
             materials = "• Prinsip Desain UI\n• Wireframing\n• User Journey\n• Prototyping Dasar",
             platform = "Google Course",
             level = "Beginner",
             duration = "4 Minggu",
-            certificate = true
+            certificate = true,
+            content = "Panduan lengkap untuk merancang antarmuka pengguna yang intuitif dan pengalaman pengguna yang optimal."
         ),
         Course(
             name = "Kelas Public Speaking - Udemy",
-            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            description = "Kursus ini membantu kamu meningkatkan keterampilan berbicara di depan umum.",
             materials = "• Teknik Vocal\n• Bahasa Tubuh\n• Menyusun Presentasi\n• Latihan Percaya Diri",
             platform = "Udemy",
             level = "Beginner",
             duration = "2 Minggu",
-            certificate = true
+            certificate = true,
+            content = "Pelajari teknik presentasi yang efektif dan cara membangun kepercayaan diri saat berbicara di depan audiens."
         ),
         Course(
             name = "Basic Project Management - edX",
-            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            description = "Kursus ini mengajarkan dasar-dasar manajemen proyek untuk pemula.",
             materials = "• Apa itu PM?\n• WBS dan Timeline\n• Stakeholder\n• Tools: Trello, Gantt",
             platform = "edX",
             level = "Beginner",
             duration = "2 Minggu",
-            certificate = true
+            certificate = true,
+            content = "Kursus ini mencakup pengenalan manajemen proyek, pembuatan rencana kerja, dan penggunaan alat seperti Trello dan Gantt Chart."
         ),
         Course(
             name = "Microsoft Excel untuk Pemula - LinkedIn Learning",
-            description = "Kursus ini membantu kamu mengembangkan skill dasar Python untuk karir IT.",
+            description = "Kursus ini mengajarkan penggunaan Microsoft Excel untuk analisis data dasar.",
             materials = "• Fungsi Dasar Excel\n• Rumus IF, SUM, AVERAGE\n• Tabel & Grafik\n• Latihan Kasus",
             platform = "LinkedIn Learning",
             level = "Beginner",
             duration = "1 Minggu",
-            certificate = true
-        ),
+            certificate = true,
+            content = "Pelajari cara menggunakan Excel untuk mengelola data, membuat tabel, dan visualisasi data dengan grafik."
+        )
     )
-
 
     private val NOTIFICATION_PERMISSION_CODE = 1001
 
     private fun showWelcomeNotification() {
         val channelId = "skillup_channel"
         val channelName = "SkillUp Notification"
-
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Channel dibutuhkan mulai dari Android Oreo ke atas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
@@ -127,11 +132,9 @@ class MainActivity : AppCompatActivity() {
                     NOTIFICATION_PERMISSION_CODE
                 )
             } else {
-                // Izin sudah diberikan, tampilkan notif
                 showWelcomeNotification()
             }
         } else {
-            // Versi di bawah Android 13 tidak butuh izin
             showWelcomeNotification()
         }
     }
@@ -150,48 +153,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listView = findViewById(R.id.listViewSkills)
-
-        val adapter = SkillAdapter(this, courseList.map { it.name }.toTypedArray())
-        listView.adapter = adapter
-
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val selected = courseList[position]
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("name", selected.name)
-            intent.putExtra("description", selected.description)
-            intent.putExtra("materials", selected.materials)
-            intent.putExtra("platform", selected.platform)
-            intent.putExtra("level", selected.level)
-            intent.putExtra("duration", selected.duration)
-            intent.putExtra("certificate", selected.certificate)
-            startActivity(intent)
-        }
-
-
-
-        val aboutButton = findViewById<Button>(R.id.aboutButton)
-        aboutButton.setOnClickListener {
-            val intent = Intent(this, AboutActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Cek & minta izin sebelum tampilkan notifikasi
-        checkNotificationPermission()
-
-//      NAV DRAWER
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
+        bottomNav = findViewById(R.id.bottom_navigation)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-// Toggle untuk buka/tutup drawer
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-// Handle klik item di drawer
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -206,9 +178,44 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        bottomNav.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_explore -> {
+                    loadFragment(exploreFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.nav_learn -> {
+                    loadFragment(learnFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.nav_search -> {
+                    loadFragment(searchFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
+
+        if (savedInstanceState == null) {
+            loadFragment(exploreFragment)
+            Log.d("MainActivity", "Loading initial fragment: ExploreFragment")
+        }
+
+        checkNotificationPermission()
     }
 
-    @Suppress("MissingSuperCall")
+    private fun loadFragment(fragment: Fragment) {
+        Log.d("MainActivity", "Loading fragment: ${fragment.javaClass.simpleName}")
+        if (fragment is ExploreFragment) {
+            fragment.arguments = Bundle().apply {
+                putParcelableArrayList("courseList", ArrayList(courseList))
+            }
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
     override fun onBackPressed() {
         val view = layoutInflater.inflate(R.layout.dialog_custom_exit, null)
         val dialog = AlertDialog.Builder(this)
@@ -217,7 +224,7 @@ class MainActivity : AppCompatActivity() {
 
         view.findViewById<Button>(R.id.btnYes).setOnClickListener {
             dialog.dismiss()
-            finish()
+            super.onBackPressed()
         }
 
         view.findViewById<Button>(R.id.btnNo).setOnClickListener {

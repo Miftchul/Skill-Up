@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -49,5 +50,20 @@ dependencies {
     implementation ("com.google.android.material:material:1.10.0")
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("com.google.android.material:material:1.10.0")
+
+    // Untuk DrawerLayout
+    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")
+    // Untuk BottomNavigationView dan NavigationView
+    implementation ("com.google.android.material:material:1.9.0")
+    // Untuk AppCompatActivity, Toolbar, dan ActionBarDrawerToggle
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    // Untuk RecyclerView (digunakan di ExploreFragment)
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+    // Untuk Fragment (ExploreFragment, LearnFragment, SearchFragment)
+    implementation ("androidx.fragment:fragment-ktx:1.5.7")
+    // Untuk Core KTX (opsional, membantu penulisan kode Kotlin)
+    implementation ("androidx.core:core-ktx:1.10.1")
+    // Untuk Activity KTX (opsional, membantu penulisan kode Kotlin)
+    implementation ("androidx.activity:activity-ktx:1.7.2")
 
 }
