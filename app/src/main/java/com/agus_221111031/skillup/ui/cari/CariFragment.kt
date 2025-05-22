@@ -298,6 +298,7 @@ Tersedia sertifikat gratis setelah menyelesaikan quiz akhir dan mini project!
         recyclerView.adapter = adapter
 
         setupSearchView()
+        
 
         return view
     }
