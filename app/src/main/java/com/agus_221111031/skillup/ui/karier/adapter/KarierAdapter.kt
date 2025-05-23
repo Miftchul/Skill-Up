@@ -26,4 +26,3 @@ class KarierAdapter(private val jobs: List<String>) :
 
     override fun getItemCount(): Int = jobs.size
 }
-

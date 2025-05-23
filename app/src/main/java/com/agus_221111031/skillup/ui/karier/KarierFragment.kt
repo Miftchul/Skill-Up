@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.agus_221111031.skillup.R
 import com.agus_221111031.skillup.data.job.provider.DummyJobProvider
 import com.agus_221111031.skillup.data.job.repository.JobRepository
+import kotlinx.coroutines.launch
 
 class KarierFragment : Fragment() {
 
@@ -53,7 +55,14 @@ class KarierFragment : Fragment() {
         rvLatest.layoutManager = LinearLayoutManager(requireContext())
 
         rvInterest.adapter = KarierAdapter(jobsByInterest)
-//        rvLatest.adapter = KarierAdapter(latestJobs) // UJI COBA
+        
+        // Mengambil data pekerjaan dari JobRepository dan menampilkannya
+        lifecycleScope.launch {
+            val latestJobsFromRepo = jobRepo.fetchJobs().map { job ->
+                "${job.title} - ${job.company} - ${job.location}"
+            }
+            rvLatest.adapter = KarierAdapter(latestJobsFromRepo)
+        }
 
         return view
     }

@@ -3,11 +3,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:gravity="top">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pelajariRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ini Pelajari Fragment" />
+
 </LinearLayout>

@@ -4,7 +4,7 @@ import com.agus_221111031.skillup.data.job.model.Job
 import com.agus_221111031.skillup.data.job.provider.JobProvider
 
 class JobRepository(private val providers: List<JobProvider>) {
-    suspend fun getAllJobs(): List<Job> {
+    suspend fun fetchJobs(): List<Job> {
         val jobs = mutableListOf<Job>()
         providers.forEach { provider ->
             jobs.addAll(provider.fetchJobs())

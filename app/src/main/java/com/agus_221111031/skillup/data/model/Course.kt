@@ -8,5 +8,6 @@ data class Course(
     val level: String,
     val duration: String,
     val certificate: Boolean,
-    val content: String
+    val content: String,
+    val progress: Int = 0 // Persentase progress kursus, default 0
 )
